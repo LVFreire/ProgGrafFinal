@@ -5,6 +5,8 @@ Shader "WoodFloor"
 	Properties
 	{
 		_TextureSample0("Texture Sample 0", 2D) = "white" {}
+		_TextureSample1("Texture Sample 1", 2D) = "white" {}
+		_TextureSample2("Texture Sample 2", 2D) = "white" {}
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 		[HideInInspector] __dirty( "", Int ) = 1
 	}
@@ -21,13 +23,21 @@ Shader "WoodFloor"
 			float2 uv_texcoord;
 		};
 
+		uniform sampler2D _TextureSample1;
+		uniform float4 _TextureSample1_ST;
 		uniform sampler2D _TextureSample0;
 		uniform float4 _TextureSample0_ST;
+		uniform sampler2D _TextureSample2;
+		uniform float4 _TextureSample2_ST;
 
 		void surf( Input i , inout SurfaceOutputStandard o )
 		{
+			float2 uv_TextureSample1 = i.uv_texcoord * _TextureSample1_ST.xy + _TextureSample1_ST.zw;
+			o.Normal = tex2D( _TextureSample1, uv_TextureSample1 ).rgb;
 			float2 uv_TextureSample0 = i.uv_texcoord * _TextureSample0_ST.xy + _TextureSample0_ST.zw;
 			o.Albedo = tex2D( _TextureSample0, uv_TextureSample0 ).rgb;
+			float2 uv_TextureSample2 = i.uv_texcoord * _TextureSample2_ST.xy + _TextureSample2_ST.zw;
+			o.Metallic = tex2D( _TextureSample2, uv_TextureSample2 ).r;
 			o.Alpha = 1;
 		}
 
@@ -38,9 +48,13 @@ Shader "WoodFloor"
 }
 /*ASEBEGIN
 Version=18900
-0;507;1450;492;1721.985;158.963;1.981008;True;True
-Node;AmplifyShaderEditor.SamplerNode;1;-669.0645,-47.31505;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;e3e51ff10bd4e9247b46d944af904bab;e3e51ff10bd4e9247b46d944af904bab;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+0;507;1450;492;1976.923;310.6942;2.223269;True;True
+Node;AmplifyShaderEditor.SamplerNode;1;-609.3388,-68.332;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;4a66ec74c17d87a47ac0e1208300976d;4a66ec74c17d87a47ac0e1208300976d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;2;-609.386,165.9026;Inherit;True;Property;_TextureSample1;Texture Sample 1;1;0;Create;True;0;0;0;False;0;False;-1;7f6af3d017166e34084c392a25b696ae;7f6af3d017166e34084c392a25b696ae;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;3;-605.6582,413.0009;Inherit;True;Property;_TextureSample2;Texture Sample 2;2;0;Create;True;0;0;0;False;0;False;-1;20a86a496975a4d4b8c0dbe434c2c9bf;20a86a496975a4d4b8c0dbe434c2c9bf;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;0,0;Float;False;True;-1;2;ASEMaterialInspector;0;0;Standard;WoodFloor;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;False;-1;0;False;-1;False;0;False;-1;0;False;-1;False;0;Opaque;0.5;True;True;0;False;Opaque;;Geometry;All;14;all;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;2;15;10;25;False;0.5;True;0;0;False;-1;0;False;-1;0;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;-1;-1;-1;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;False;0.1;False;-1;0;False;-1;False;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
 WireConnection;0;0;1;0
+WireConnection;0;1;2;0
+WireConnection;0;3;3;0
 ASEEND*/
-//CHKSM=7D62D964B68DC71644CF6793A0ECB799DCDA1C08
+//CHKSM=8F95224DEB2C128E137A21CE8F72F45D6A424FAD
